@@ -1,6 +1,7 @@
 package mpi;
 
 import mpi.CartParms;
+import mpi.Info;
 import mpi.Intracomm;
 import mpi.MPI;
 import mpi.MPIException;
@@ -34,6 +35,11 @@ public final class CartComm extends Intracomm {
    public CartComm iDup() throws MPIException {
       MPI.check();
       return new CartComm(this.iDup(this.handle));
+   }
+
+   public CartComm dupWithInfo(Info var1) throws MPIException {
+      MPI.check();
+      return new CartComm(this.dupWithInfo(this.handle, var1.handle));
    }
 
    public CartParms getTopo() throws MPIException {

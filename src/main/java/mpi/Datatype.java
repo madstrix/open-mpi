@@ -5,7 +5,7 @@ import mpi.Freeable;
 import mpi.MPI;
 import mpi.MPIException;
 
-public final class Datatype implements Freeable {
+public final class Datatype implements Freeable, Cloneable {
 
    protected long handle;
    protected int baseType;

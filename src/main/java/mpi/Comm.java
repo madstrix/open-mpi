@@ -14,8 +14,9 @@ import mpi.Prequest;
 import mpi.Request;
 import mpi.Status;
 
-public class Comm implements Freeable {
+public class Comm implements Freeable, Cloneable {
 
+   public static final int TYPE_SHARED = 0;
    protected static final int SELF = 1;
    protected static final int WORLD = 2;
    protected long handle;
@@ -63,6 +64,13 @@ public class Comm implements Freeable {
    }
 
    protected final native long[] iDup(long var1) throws MPIException;
+
+   public Comm dupWithInfo(Info var1) throws MPIException {
+      MPI.check();
+      return new Comm(this.dupWithInfo(this.handle, var1.handle));
+   }
+
+   protected final native long dupWithInfo(long var1, long var3) throws MPIException;
 
    public final Request getRequest() {
       return this.request;
@@ -562,7 +570,7 @@ public class Comm implements Freeable {
       MPI.check();
       MPI.assertDirectBuffer(var1);
       Request var5 = new Request(this.iGather(this.handle, (Buffer)null, 0, 0L, var1, var2, var3.handle, var4));
-      var5.addSendBufRef(var1);
+      var5.addRecvBufRef(var1);
       return var5;
    }
 
@@ -618,7 +626,6 @@ public class Comm implements Freeable {
       MPI.assertDirectBuffer(var1, var4);
       Request var9 = new Request(this.iGatherv(this.handle, var1, var2, var3.handle, var4, var5, var6, var7.handle, var8));
       var9.addSendBufRef(var1);
-      var9.addRecvBufRef(var4);
       return var9;
    }
 
@@ -931,6 +938,29 @@ public class Comm implements Freeable {
    }
 
    private native long iAllToAllv(long var1, Buffer var3, int[] var4, int[] var5, long var6, Buffer var8, int[] var9, int[] var10, long var11) throws MPIException;
+
+   public final void allToAllw(Buffer var1, int[] var2, int[] var3, Datatype[] var4, Buffer var5, int[] var6, int[] var7, Datatype[] var8) throws MPIException {
+      MPI.check();
+      MPI.assertDirectBuffer(var1, var5);
+      long[] var9 = this.convertTypeArray(var4);
+      long[] var10 = this.convertTypeArray(var8);
+      this.allToAllw(this.handle, var1, var2, var3, var9, var5, var6, var7, var10);
+   }
+
+   private native void allToAllw(long var1, Buffer var3, int[] var4, int[] var5, long[] var6, Buffer var7, int[] var8, int[] var9, long[] var10) throws MPIException;
+
+   public final Request iAllToAllw(Buffer var1, int[] var2, int[] var3, Datatype[] var4, Buffer var5, int[] var6, int[] var7, Datatype[] var8) throws MPIException {
+      MPI.check();
+      MPI.assertDirectBuffer(var1, var5);
+      long[] var9 = this.convertTypeArray(var4);
+      long[] var10 = this.convertTypeArray(var8);
+      Request var11 = new Request(this.iAllToAllw(this.handle, var1, var2, var3, var9, var5, var6, var7, var10));
+      var11.addSendBufRef(var1);
+      var11.addRecvBufRef(var5);
+      return var11;
+   }
+
+   private native long iAllToAllw(long var1, Buffer var3, int[] var4, int[] var5, long[] var6, Buffer var7, int[] var8, int[] var9, long[] var10) throws MPIException;
 
    public final void neighborAllGather(Object var1, int var2, Datatype var3, Object var4, int var5, Datatype var6) throws MPIException {
       MPI.check();
@@ -1326,6 +1356,18 @@ public class Comm implements Freeable {
    }
 
    private native String getName(long var1) throws MPIException;
+
+   private long[] convertTypeArray(Datatype[] var1) {
+      long[] var2 = new long[var1.length];
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         if(var1[var3] != null) {
+            var2[var3] = var1[var3].handle;
+         }
+      }
+
+      return var2;
+   }
 
    static {
       init();

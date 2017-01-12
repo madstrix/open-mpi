@@ -2,6 +2,7 @@ package mpi;
 
 import mpi.Comm;
 import mpi.Group;
+import mpi.Info;
 import mpi.Intracomm;
 import mpi.MPI;
 import mpi.MPIException;
@@ -32,6 +33,11 @@ public final class Intercomm extends Comm {
    public Intercomm iDup() throws MPIException {
       MPI.check();
       return new Intercomm(this.iDup(this.handle));
+   }
+
+   public Intercomm dupWithInfo(Info var1) throws MPIException {
+      MPI.check();
+      return new Intercomm(this.dupWithInfo(this.handle, var1.handle));
    }
 
    public int getRemoteSize() throws MPIException {

@@ -73,6 +73,13 @@ public class Request implements Freeable {
 
    private native Status testStatus(long var1) throws MPIException;
 
+   public final Status getStatus() throws MPIException {
+      MPI.check();
+      return this.getStatus(this.handle);
+   }
+
+   private native Status getStatus(long var1) throws MPIException;
+
    public final boolean test() throws MPIException {
       MPI.check();
       return this.test(this.handle);
@@ -204,7 +211,11 @@ public class Request implements Freeable {
       long[] var1 = new long[var0.length];
 
       for(int var2 = 0; var2 < var0.length; ++var2) {
-         var1[var2] = var0[var2].handle;
+         if(var0[var2] != null) {
+            var1[var2] = var0[var2].handle;
+         } else {
+            var1[var2] = 0L;
+         }
       }
 
       return var1;

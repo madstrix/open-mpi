@@ -28,6 +28,7 @@ import mpi.MPIException;
 import mpi.Op;
 import mpi.Request;
 import mpi.ShortInt;
+import mpi.Version;
 
 public final class MPI {
 
@@ -57,6 +58,8 @@ public final class MPI {
    public static final Op BOR;
    public static final Op LXOR;
    public static final Op BXOR;
+   public static final Op REPLACE;
+   public static final Op NO_OP;
    public static final Op MINLOC;
    public static final Op MAXLOC;
    public static final Datatype DATATYPE_NULL;
@@ -207,6 +210,8 @@ public final class MPI {
 
    private static native DoubleInt newDoubleInt();
 
+   private static native void initVersion();
+
    private static void initCommon() throws MPIException {
       initialized = true;
       DATATYPE_NULL.setBasic(0);
@@ -289,6 +294,18 @@ public final class MPI {
    }
 
    private static native double wtick_jni();
+
+   public static Version getVersion() {
+      return getVersionJNI();
+   }
+
+   private static native Version getVersionJNI();
+
+   public static String getLibVersion() {
+      return getLibVersionJNI();
+   }
+
+   private static native String getLibVersionJNI();
 
    public static String getProcessorName() throws MPIException {
       check();
@@ -531,6 +548,8 @@ public final class MPI {
       BXOR = new Op(10);
       MINLOC = new Op(11);
       MAXLOC = new Op(12);
+      REPLACE = new Op(13);
+      NO_OP = new Op(14);
       GROUP_EMPTY = new Group(Group.getEmpty());
       REQUEST_NULL = new Request(Request.getNull());
       INFO_ENV = Info.newEnv();
@@ -657,5 +676,6 @@ public final class MPI {
       ERR_WIN = var0.ERR_WIN;
       ERR_LASTCODE = var0.ERR_LASTCODE;
       ERR_SYSRESOURCE = var0.ERR_SYSRESOURCE;
+      initVersion();
    }
 }

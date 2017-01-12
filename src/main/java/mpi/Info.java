@@ -4,7 +4,7 @@ import mpi.Freeable;
 import mpi.MPI;
 import mpi.MPIException;
 
-public final class Info implements Freeable {
+public final class Info implements Freeable, Cloneable {
 
    protected long handle;
    protected static final long NULL = getNull();

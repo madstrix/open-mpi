@@ -2,6 +2,7 @@ package mpi;
 
 import mpi.DistGraphNeighbors;
 import mpi.GraphParms;
+import mpi.Info;
 import mpi.Intracomm;
 import mpi.MPI;
 import mpi.MPIException;
@@ -34,6 +35,11 @@ public final class GraphComm extends Intracomm {
    public GraphComm iDup() throws MPIException {
       MPI.check();
       return new GraphComm(this.iDup(this.handle));
+   }
+
+   public GraphComm dupWithInfo(Info var1) throws MPIException {
+      MPI.check();
+      return new GraphComm(this.dupWithInfo(this.handle, var1.handle));
    }
 
    public GraphParms getDims() throws MPIException {

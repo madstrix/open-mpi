@@ -280,7 +280,7 @@ public final class File {
       MPI.check();
       MPI.assertDirectBuffer(var1);
       Request var4 = new Request(this.iWrite(this.handle, var1, var2, var3.handle));
-      var4.addSendBufRef(var1);
+      var4.addRecvBufRef(var1);
       return var4;
    }
 

@@ -91,7 +91,7 @@ public abstract class Struct {
       } else {
          int var4 = this.extent;
          this.extent += var2 * var3;
-         this.fields.add(new Struct.Field(var1, var4, var3, (Struct.NamelessClass1238667249)null));
+         this.fields.add(new Struct.Field(var1, var4, var3, null));
          return var4;
       }
    }
@@ -199,13 +199,9 @@ public abstract class Struct {
       }
 
       // $FF: synthetic method
-      Field(Object var1, int var2, int var3, Struct.NamelessClass1238667249 var4) {
+      Field(Object var1, int var2, int var3, Object var4) {
          this(var1, var2, var3);
       }
-   }
-
-   // $FF: synthetic class
-   static class NamelessClass1238667249 {
    }
 
    public abstract class Data {

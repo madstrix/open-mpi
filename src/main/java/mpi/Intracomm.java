@@ -43,6 +43,11 @@ public class Intracomm extends Comm {
       return new Intracomm(this.iDup(this.handle));
    }
 
+   public Intracomm dupWithInfo(Info var1) throws MPIException {
+      MPI.check();
+      return new Intracomm(this.dupWithInfo(this.handle, var1.handle));
+   }
+
    public final Intracomm split(int var1, int var2) throws MPIException {
       MPI.check();
       return new Intracomm(this.split(this.handle, var1, var2));
@@ -50,12 +55,26 @@ public class Intracomm extends Comm {
 
    private native long split(long var1, int var3, int var4) throws MPIException;
 
+   public final Intracomm splitType(int var1, int var2, Info var3) throws MPIException {
+      MPI.check();
+      return new Intracomm(this.splitType(this.handle, var1, var2, var3.handle));
+   }
+
+   private native long splitType(long var1, int var3, int var4, long var5) throws MPIException;
+
    public final Intracomm create(Group var1) throws MPIException {
       MPI.check();
       return new Intracomm(this.create(this.handle, var1.handle));
    }
 
    private native long create(long var1, long var3);
+
+   public final Intracomm createGroup(Group var1, int var2) throws MPIException {
+      MPI.check();
+      return new Intracomm(this.createGroup(this.handle, var1.handle, var2));
+   }
+
+   private native long createGroup(long var1, long var3, int var5);
 
    public final CartComm createCart(int[] var1, boolean[] var2, boolean var3) throws MPIException {
       MPI.check();
